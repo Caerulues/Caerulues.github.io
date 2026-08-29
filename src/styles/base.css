@@ -1,0 +1,56 @@
+:root {
+    --nav-height: 44px;
+    --nav-content-width: 1024px;
+    --nav-safe-padding: 22px;
+    --flyout-height: 0px;
+    --flyout-rate: 240ms;
+    --nav-background: rgba(250, 250, 252, 0.8);
+    --nav-background-opened: #fafafc;
+    --nav-color: rgba(0, 0, 0, 0.8);
+    --nav-color-hover: #000;
+    --nav-color-secondary: #333336;
+    --nav-header-color: #6e6e73;
+    --nav-curtain-color: rgba(232, 232, 237, 0.4);
+    --nav-ease: cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-width: 320px;
+    background: #fff;
+    color-scheme: light;
+}
+
+body {
+    margin: 0;
+    padding-top: var(--nav-height);
+    color: #1d1d1f;
+    background: #fff;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+button,
+a {
+    font: inherit;
+}
+
+button:focus-visible,
+a:focus-visible {
+    outline: 2px solid #0071e3;
+    outline-offset: -2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0ms !important;
+    }
+}

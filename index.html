@@ -1,11 +1,153 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <title>Caerulues</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Caerulues 的个人网站导航模板。">
+    <title>Caerulues</title>
+    <link rel="stylesheet" href="./style.css">
+    <script type="module" src="./src/header.js"></script>
 </head>
 <body>
-  <h1>Hello, GitHub Pages!</h1>
-  <p>这是我的个人网站。</p>
+<header class="site-header" data-site-header>
+    <nav class="navigation" aria-label="主导航">
+        <button
+                class="submenu-back"
+                type="button"
+                aria-label="返回主菜单"
+                data-submenu-back
+        >
+            <span aria-hidden="true">‹</span>
+        </button>
+
+        <ul class="navigation-list" id="primary-navigation" data-navigation-list>
+            <li class="navigation-item">
+                <a class="navigation-link" href="./">Menu</a>
+            </li>
+
+            <li
+                    class="navigation-item has-submenu"
+                    data-submenu-item
+                    data-submenu-label="Archives 目录"
+            >
+                <button
+                        class="navigation-link submenu-trigger"
+                        type="button"
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        aria-controls="submenu-archives"
+                        data-submenu-trigger
+                >
+                    Archives
+                </button>
+
+                <div class="submenu" id="submenu-archives" data-submenu>
+                    <div class="submenu-scroll">
+                        <div class="submenu-content">
+                            <section class="submenu-group submenu-group-elevated">
+                                <h2 class="submenu-title flyout-item">探索归档</h2>
+                                <ul class="submenu-list submenu-list-elevated">
+                                    <li class="flyout-item"><a href="./archives/">查看全部</a></li>
+                                    <li class="flyout-item"><a href="./archives/#latest">最近更新</a></li>
+                                    <li class="flyout-item"><a href="./archives/#featured">精选文章</a></li>
+                                </ul>
+                            </section>
+
+                            <section class="submenu-group">
+                                <h2 class="submenu-title flyout-item">按主题浏览</h2>
+                                <ul class="submenu-list">
+                                    <li class="flyout-item"><a href="./categories/web/">Web 开发</a></li>
+                                    <li class="flyout-item"><a href="./categories/music/">音乐</a></li>
+                                    <li class="flyout-item"><a href="./categories/notes/">学习笔记</a></li>
+                                </ul>
+                            </section>
+
+                            <section class="submenu-group">
+                                <h2 class="submenu-title flyout-item">快速链接</h2>
+                                <ul class="submenu-list">
+                                    <li class="flyout-item"><a href="./categories/">分类索引</a></li>
+                                    <li class="flyout-item"><a href="./tags/">标签索引</a></li>
+                                </ul>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li
+                    class="navigation-item has-submenu"
+                    data-submenu-item
+                    data-submenu-label="Repositories 目录"
+            >
+                <button
+                        class="navigation-link submenu-trigger"
+                        type="button"
+                        aria-expanded="false"
+                        aria-haspopup="true"
+                        aria-controls="submenu-repositories"
+                        data-submenu-trigger
+                >
+                    Repositories
+                </button>
+
+                <div class="submenu" id="submenu-repositories" data-submenu>
+                    <div class="submenu-scroll">
+                        <div class="submenu-content">
+                            <section class="submenu-group submenu-group-elevated">
+                                <h2 class="submenu-title flyout-item">精选项目</h2>
+                                <ul class="submenu-list submenu-list-elevated">
+                                    <li class="flyout-item"><a href="./repositories/">查看全部项目</a></li>
+                                    <li class="flyout-item"><a href="./repositories/website/">个人网站</a></li>
+                                    <li class="flyout-item"><a href="./repositories/labs/">实验作品</a></li>
+                                </ul>
+                            </section>
+
+                            <section class="submenu-group">
+                                <h2 class="submenu-title flyout-item">技术分类</h2>
+                                <ul class="submenu-list">
+                                    <li class="flyout-item"><a href="./repositories/#html-css">HTML 与 CSS</a></li>
+                                    <li class="flyout-item"><a href="./repositories/#javascript">JavaScript</a></li>
+                                    <li class="flyout-item"><a href="./repositories/#python">Python</a></li>
+                                </ul>
+                            </section>
+
+                            <section class="submenu-group">
+                                <h2 class="submenu-title flyout-item">更多</h2>
+                                <ul class="submenu-list">
+                                    <li class="flyout-item"><a href="https://github.com/" rel="noreferrer">GitHub</a></li>
+                                    <li class="flyout-item"><a href="./about/#projects">项目说明</a></li>
+                                </ul>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li class="navigation-item">
+                <a class="navigation-link" href="./about/">About</a>
+            </li>
+        </ul>
+
+        <button
+                class="menu-toggle"
+                type="button"
+                aria-label="打开导航菜单"
+                aria-expanded="false"
+                aria-controls="primary-navigation"
+                data-menu-toggle
+        >
+            <span class="menu-toggle-line menu-toggle-line-top" aria-hidden="true"></span>
+            <span class="menu-toggle-line menu-toggle-line-bottom" aria-hidden="true"></span>
+        </button>
+    </nav>
+</header>
+
+<div class="navigation-curtain" data-navigation-curtain aria-hidden="true"></div>
+
+<main class="page-content">
+    <section class="hero">
+
+    </section>
+</main>
 </body>
 </html>

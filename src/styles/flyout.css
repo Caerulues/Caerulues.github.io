@@ -1,3 +1,28 @@
+.site-header::after {
+    content: "";
+    position: fixed;
+    z-index: 1;
+    top: var(--nav-height);
+    right: 0;
+    left: 0;
+    height: 0;
+    visibility: hidden;
+    pointer-events: none;
+    background: var(--nav-background-opened);
+    transition:
+        height var(--flyout-rate) var(--nav-ease) 0.12s,
+        visibility var(--flyout-rate) step-end 0.12s;
+}
+
+.site-header.flyout-open::after,
+.site-header.flyout-closing::after {
+    height: var(--flyout-height);
+    visibility: visible;
+    transition:
+        height var(--flyout-rate) var(--nav-ease),
+        visibility var(--flyout-rate) step-start;
+}
+
 .submenu {
     position: fixed;
     z-index: 2;
@@ -9,22 +34,19 @@
     overflow: hidden;
     visibility: hidden;
     pointer-events: none;
-    background: var(--nav-background-opened);
+    background: transparent;
     transition:
         height var(--flyout-rate) var(--nav-ease) 0.12s,
-        visibility var(--flyout-rate) step-end 0.12s,
-        background var(--flyout-rate) var(--nav-ease) 0.12s;
+        visibility var(--flyout-rate) step-end 0.12s;
 }
 
 .navigation-item.is-open > .submenu,
 .navigation-item.is-closing > .submenu {
     height: var(--flyout-height);
     visibility: visible;
-    background: var(--nav-background-opened);
     transition:
         height var(--flyout-rate) var(--nav-ease),
-        visibility var(--flyout-rate) step-start,
-        background var(--flyout-rate) var(--nav-ease);
+        visibility var(--flyout-rate) step-start;
 }
 
 .navigation-item.is-open > .submenu {

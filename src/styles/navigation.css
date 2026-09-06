@@ -13,7 +13,7 @@
 
 .site-header.flyout-open,
 .site-header.flyout-closing {
-    background: transparent;
+    background: var(--nav-background-opened);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
 }

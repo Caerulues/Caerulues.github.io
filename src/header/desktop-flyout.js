@@ -1,7 +1,8 @@
-import {getSubmenuContent, getTrigger, setExpanded} from "./dom.js";
+import {getSubmenu, getSubmenuContent, getTrigger, setExpanded} from "./dom.js";
 
 const OPEN_DELAY = 120;
 const CLOSE_DELAY = 120;
+const CONTENT_EXIT_DURATION = 240;
 
 export function createDesktopFlyout({
     siteHeader,
@@ -12,6 +13,7 @@ export function createDesktopFlyout({
     let currentItem = null;
     let openTimer = 0;
     let closeTimer = 0;
+    let contentExitTimer = 0;
     let cleanupTimer = 0;
 
     function getAnimationRate(height) {
@@ -27,8 +29,21 @@ export function createDesktopFlyout({
         return content ? Math.ceil(content.getBoundingClientRect().height) : 0;
     }
 
-    function setHeaderHeight(height) {
-        const rate = getAnimationRate(height);
+    function getRenderedSubmenuHeight(item) {
+        const submenu = getSubmenu(item);
+        const renderedHeight = submenu?.getBoundingClientRect().height ?? 0;
+
+        if (renderedHeight > 0) {
+            return Math.ceil(renderedHeight);
+        }
+
+        return parseFloat(
+            getComputedStyle(siteHeader).getPropertyValue("--flyout-height")
+        ) || 0;
+    }
+
+    function setHeaderHeight(height, rateReference = height) {
+        const rate = getAnimationRate(Math.max(height, rateReference));
 
         siteHeader.style.setProperty("--flyout-height", `${height}px`);
         siteHeader.style.setProperty("--flyout-rate", `${rate}ms`);
@@ -39,17 +54,28 @@ export function createDesktopFlyout({
     function clearTimers() {
         window.clearTimeout(openTimer);
         window.clearTimeout(closeTimer);
+        window.clearTimeout(contentExitTimer);
         window.clearTimeout(cleanupTimer);
     }
 
     function finishClosing(item) {
         item?.classList.remove("is-closing");
         siteHeader.classList.remove("flyout-closing");
+        document.body.classList.remove("navigation-open");
+
+        if (currentItem === item) {
+            currentItem = null;
+        }
+
         setHeaderHeight(0);
     }
 
     function close({restoreFocus = false} = {}) {
-        if (!currentItem || mobileQuery.matches) {
+        if (
+            !currentItem ||
+            mobileQuery.matches ||
+            currentItem.classList.contains("is-closing")
+        ) {
             return;
         }
 
@@ -57,36 +83,45 @@ export function createDesktopFlyout({
 
         const closingItem = currentItem;
         const closingTrigger = getTrigger(closingItem);
-        const rate = setHeaderHeight(0);
+        const currentHeight = getRenderedSubmenuHeight(closingItem);
 
         closingItem.classList.remove("is-open");
         closingItem.classList.add("is-closing");
         setExpanded(closingItem, false);
         siteHeader.classList.remove("flyout-open");
         siteHeader.classList.add("flyout-closing");
-        document.body.classList.remove("navigation-open");
-        currentItem = null;
 
-        cleanupTimer = window.setTimeout(() => {
-            finishClosing(closingItem);
+        const contentExitDelay = reducedMotionQuery.matches ? 0 : CONTENT_EXIT_DURATION;
 
-            if (restoreFocus) {
-                closingTrigger?.focus();
+        contentExitTimer = window.setTimeout(() => {
+            if (currentItem !== closingItem || !closingItem.classList.contains("is-closing")) {
+                return;
             }
-        }, rate + CLOSE_DELAY);
+
+            document.body.classList.remove("navigation-open");
+            const panelRate = setHeaderHeight(0, currentHeight);
+
+            cleanupTimer = window.setTimeout(() => {
+                finishClosing(closingItem);
+
+                if (restoreFocus) {
+                    closingTrigger?.focus();
+                }
+            }, panelRate + CLOSE_DELAY);
+        }, contentExitDelay);
     }
 
     function open(item) {
-        if (!item || mobileQuery.matches || item === currentItem) {
+        const alreadyOpen = item === currentItem && item?.classList.contains("is-open");
+
+        if (!item || mobileQuery.matches || alreadyOpen) {
             return;
         }
 
         clearTimers();
 
         const previousItem = currentItem;
-        const previousHeight = previousItem
-            ? parseFloat(getComputedStyle(siteHeader).getPropertyValue("--flyout-height")) || 0
-            : 0;
+        const previousHeight = previousItem ? getRenderedSubmenuHeight(previousItem) : 0;
         const nextHeight = measureSubmenu(item);
 
         submenuItems.forEach((otherItem) => {
@@ -100,7 +135,7 @@ export function createDesktopFlyout({
         siteHeader.classList.remove("flyout-closing");
         siteHeader.classList.add("flyout-open");
         document.body.classList.add("navigation-open");
-        setHeaderHeight(previousItem ? previousHeight : 0);
+        setHeaderHeight(previousItem ? previousHeight : 0, previousHeight);
 
         window.requestAnimationFrame(() => {
             setHeaderHeight(nextHeight);

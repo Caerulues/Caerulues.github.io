@@ -27,6 +27,7 @@ function initializeHeader({
     });
     const mobileNavigation = createMobileNavigation({
         siteHeader,
+        navigationList,
         menuToggle,
         submenuItems,
         mobileQuery,
@@ -116,5 +117,6 @@ function initializeHeader({
         mobileNavigation.reset();
     });
 
+    mobileNavigation.prepare();
     desktopFlyout.prepare();
 }
